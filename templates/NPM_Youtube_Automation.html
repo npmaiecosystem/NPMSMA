@@ -15,10 +15,11 @@
       overflow-x: hidden;
       line-height: 1.6;
     }
-
+    #sect2{
+      display:none;
+    }
     a { color:#1ed760; text-decoration:none; transition:0.3s; }
     a:hover { color:#ffffff; }
-
     /* Background Video - Logical: Use muted, loop, low opacity for focus on content */
     #bg-video {
       position: fixed;
@@ -34,21 +35,50 @@
       background: rgba(10, 10, 30, 0.65); /* Darker overlay for better readability */
       z-index: -1;
     }
-
     /* Hero - Logical: Eye-catching intro with call-to-action proximity */
     .hero {
       padding: 6rem 6vw 5rem;
       text-align: center; /* Centered for impact */
       position: relative;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
     .hero h1 {
-      font-size: clamp(3rem, 7vw, 6rem);
+      font-size: 50px;
       font-weight: 800;
       background: linear-gradient(90deg, #1ed760, #ffffff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: fadeInScale 1.2s ease forwards;
       margin-bottom: 1rem;
+      margin-top: 0px;
+      margin-left: 0px;
+      text-align: center;
+      padding: 0px;
+    }
+    .hero .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .toggle-btn{
+      background-color: #1ed760;
+      color: #000000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 0;
+      margin-left: 0px;
+      margin-top: 0;
+      padding: 16px 32px;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn:hover {
+      background-color: #16a34a;
+      transform: translateY(-2px);
     }
     .motto {
       font-size: 1.4rem;
@@ -65,19 +95,101 @@
       line-height: 1.7;
       animation: fadeInScale 1.8s ease forwards 0.4s;
       opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    #sect1{
+      margin-left: 0;
+      margin-top: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+      padding: 2rem 6vw;
+    }
+    #sect1 section {
+      background: rgba(30, 30, 50, 0.5);
+      border: 1px solid rgba(30, 215, 96, 0.2);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    #sect1 .login-btn {
+      background-color: #1ed760;
+      color: #000000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 2rem;
+      margin-left: 0px;
+      margin-top: 0;
+      padding: 16px 32px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    #sect1 .login-btn:hover {
+      background-color: #16a34a;
+      transform: translateY(-2px);
+    }
+    #sect1 form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 0;
+    }
+    #sect1 label {
+      text-align: left;
+      font-weight: 500;
+      color: #1ed760;
+      margin-top: 0;
+    }
+    #sect1 input[type="file"] {
+      padding: 0.75rem;
+      border: 1px solid rgba(30, 215, 96, 0.3);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #e0e0e0;
+      width: 100%;
+    }
+    #sect1 input[type="file"]::file-selector-button {
+      background: #1ed760;
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 1rem;
+    }
+    #sect1 button[type="submit"] {
+      background: linear-gradient(45deg, #1ed760, #16a34a);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    #sect1 button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
     }
     @keyframes fadeInScale {
       from { opacity:0; transform:translateY(40px) scale(0.95); }
-      to   { opacity:1; transform:translateY(0) scale(1); }
+      to { opacity:1; transform:translateY(0) scale(1); }
     }
-
     /* Sections - Logical: Consistent padding, alternating backgrounds for visual flow */
-    section { padding: 6rem 6vw; }
+    section { padding: 0rem; }
     .alt-bg { background: rgba(0,0,0,0.25); }
     .section-title {
       text-align: center;
       font-size: 2.5rem;
-      margin-bottom: 3.5rem;
+      margin-bottom: 3rem;
       color: #1ed760;
       position: relative;
     }
@@ -87,10 +199,9 @@
       width: 60px;
       height: 3px;
       background: #1ed760;
-      margin: 1rem auto;
+      margin: auto;
       border-radius: 2px;
     }
-
     /* Grids - Logical: Responsive, hover effects for engagement */
     .features-grid, .steps-grid {
       display: grid;
@@ -133,21 +244,20 @@
     .steps-grid .card ol { counter-reset: step-counter; }
     .steps-grid .card li { counter-increment: step-counter; }
     .steps-grid .card li::before {
-      content: counter(step-counter) ". "; 
-      background: #1ed760; 
-      color: #000; 
-      width: 2rem; 
-      height: 2rem; 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-weight: bold; 
-      margin-right: 0.5rem; 
-      position: absolute; 
+      content: counter(step-counter) ". ";
+      background: #1ed760;
+      color: #000;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      position: absolute;
       left: -0.5rem;
     }
-
     /* Pro Tip & Blockquote - Logical: Standout styling for emphasis */
     .pro-tip {
       background: linear-gradient(135deg, rgba(30, 215, 96, 0.15), rgba(30, 215, 96, 0.05));
@@ -159,7 +269,6 @@
       text-align: center;
       font-size: 1.1rem;
     }
-
     /* Future Vision - Logical: Bullet list for scannability */
     .future-vision {
       text-align: center;
@@ -169,7 +278,6 @@
     .future-vision ul { list-style: none; padding: 0; text-align: left; max-width: 700px; margin: 0 auto; }
     .future-vision li { margin-bottom: 1.2rem; padding-left: 2rem; position: relative; font-size: 1.1rem; }
     .future-vision li::before { content: "🌟"; position: absolute; left: 0; font-size: 1.2rem; }
-
     /* Quick Start - Logical: Code block for devs, prominent download for users */
     .quick-start {
       background: rgba(0,0,0,0.4);
@@ -192,7 +300,6 @@
       border-left: 4px solid #1ed760;
     }
     .quick-start p { font-size: 1.1rem; margin-bottom: 1.5rem; }
-
     /* Download CTA - Logical: High-contrast, animated button for conversion */
     .download-cta {
       text-align: center;
@@ -231,7 +338,6 @@
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 18px 45px rgba(30, 215, 96, 0.4);
     }
-
     /* Profile - Logical: Expanded, modular sections for storytelling */
     .profile-section { padding: 6rem 6vw 4rem; }
     .profile-container {
@@ -327,10 +433,10 @@
       justify-content: center;
       margin: 3rem 0;
     }
-    .stats-container img { 
-      max-width: 48%; 
-      height: auto; 
-      border-radius: 16px; 
+    .stats-container img {
+      max-width: 48%;
+      height: auto;
+      border-radius: 16px;
       border: 1px solid rgba(30, 215, 96, 0.2);
     }
     .mantra-box {
@@ -341,7 +447,6 @@
     }
     .mantra-box h2 { color: #1ed760; margin-bottom: 1.2rem; font-size: 2rem; }
     .mantra-box p { font-size: 1.2rem; color: #eee; font-style: italic; max-width: 900px; margin: 0 auto; line-height: 1.6; }
-
     blockquote {
       font-style: italic;
       color: #ccc;
@@ -350,7 +455,6 @@
       margin: 2.5rem 0;
       font-size: 1.1rem;
     }
-
     footer {
       text-align: center;
       padding: 4rem 1rem;
@@ -359,7 +463,6 @@
       border-top: 1px solid rgba(30, 215, 96, 0.2);
       background: rgba(0,0,0,0.3);
     }
-
     /* Responsive - Logical: Prioritize mobile readability */
     @media (max-width: 900px) {
       section { padding: 4rem 4vw; }
@@ -367,29 +470,35 @@
       .profile-header { justify-content: center; text-align: center; flex-direction: column; }
       .stats-container img { max-width: 100%; }
       .features-grid, .steps-grid { grid-template-columns: 1fr; }
+      .hero .toggle-buttons { flex-direction: column; align-items: center; }
     }
     @media (max-width: 600px) {
       .hero { padding: 4rem 3vw 3rem; }
       .quick-start { padding: 2rem 1rem; }
       .profile-header { padding: 2rem 1rem; }
+      #sect1 section { padding: 2rem; }
     }
   </style>
 </head>
 <body>
-
   <!-- Background Video -->
   <video autoplay muted loop playsinline id="bg-video" aria-hidden="true">
     <source src="https://npmexplorer.netlify.app/NPM%20ai%20backgrond%20video.mp4" type="video/mp4">
   </video>
   <div id="overlay" aria-hidden="true"></div>
-
+ 
   <!-- Hero -->
   <section class="hero" style="margin-bottom:0px;">
     <h1>NPM YouTube Automation</h1>
+    <div class="toggle-buttons">
+      <button class="toggle-btn" onclick="toggle1()">Web App</button>
+      <button class="toggle-btn" onclick="toggle()">Desktop App</button>
+    </div>
     <div class="motto">Automate Uploads. Unleash Creativity.</div>
     <p class="intro-text">Welcome to the future of content creation! This tool combines the power of <strong>AI-generated metadata</strong> with <strong>automatic YouTube uploading</strong>. Non-technical creators can now upload videos with smart titles, descriptions, and hashtags — all in one click.</p>
   </section>
-  
+ 
+   <div id="sect2">
   <section class="hero" style="margin-top:0px; margin-bottom:0px;">
    <h3 style="margin-bottom:25px;">Quick Buttons <p> Click on buttons to explore</p></h3>
    <div class="features-grid">
@@ -414,7 +523,6 @@
     <h4 style="color:green;">To get to know more about this project click above</h4>
     </div>
   </section>
-
   <!-- Features -->
   <section>
     <div id="Features">
@@ -451,7 +559,6 @@
     </div>
     </div>
   </section>
-
   <!-- How It Works -->
   <section class="alt-bg">
     <div id="How">
@@ -476,7 +583,6 @@
     </div>
     </div>
   </section>
-
   <!-- No Technical Knowledge Needed -->
   <section>
     <div id="Knowledge">
@@ -506,7 +612,6 @@
     </blockquote>
    </div>
   </section>
-
   <!-- Future Vision -->
   <section class="alt-bg">
    <div id="Future">
@@ -522,7 +627,6 @@
     </div>
     </div>
   </section>
-
   <!-- Quick Start -->
   <section>
    <div id="Download">
@@ -540,7 +644,6 @@
     </div>
    </div>
   </section>
-
   <!-- Enhanced Profile Section -->
   <section class="profile-section alt-bg">
     <div id="Developer">
@@ -559,7 +662,6 @@
             </blockquote>
           </div>
         </div>
-
         <div class="social-badges">
           <a href="https://facebook.com/share/19dvhX1mH7/" target="_blank" rel="noopener"><i class="fab fa-facebook"></i> Facebook 405k+</a>
           <a href="https://youtu.be/qWTkKsegx9c" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> TEDx Talk</a>
@@ -567,9 +669,7 @@
           <a href="mailto:sonu.kr.nalanda@gmail.com"><i class="fas fa-envelope"></i> Email</a>
           <a href="https://github.com/sonuramashishnpm" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
         </div>
-
         <hr class="divider">
-
         <div class="profile-details">
           <div class="detail-box">
             <h3>🔥 Who Am I?</h3>
@@ -578,13 +678,11 @@
             <h4><strong>Open Source Innovator</strong> — Creating tools for education and democracy.</h4>
             <h4><strong>Self-taught Engineer</strong> — No formal CS background, just pure grit and internet.</h4>
           </div>
-
           <div class="detail-box">
             <h3>✨ Tech Toolbox</h3>
             <img src="https://skillicons.dev/icons?i=python,flask,streamlit,html,css,js,solidity,raspberrypi,selenium,git,github,docker,ai" alt="Tech stack icons: Python, Flask, Streamlit, HTML, CSS, JS, Solidity, Raspberry Pi, Selenium, Git, GitHub, Docker, AI" loading="lazy" />
           </div>
         </div>
-
         <div class="full-width-box">
           <h3>🌟 Major Projects & Repos</h3>
           <div class="repo-list">
@@ -597,7 +695,6 @@
             <div class="repo-item"><strong>NPM Legal AI:</strong> Free legal intelligence toolkit.</div>
           </div>
         </div>
-
         <div class="profile-details">
           <div class="detail-box">
             <h3>💫 Achievements</h3>
@@ -610,17 +707,14 @@
             <p>Building a 400K+ youth movement. Blending rural activism with world-class tech to create ethical, free AI tools for "broke students."</p>
           </div>
         </div>
-
         <div class="full-width-box">
           <h3>🏗️ Mission & Goals</h3>
           <p>Democratize education, AI, & civic tech for everyone. Give rural students a global stage and affordable tools. Transform adversity into action.</p>
         </div>
-
         <div class="stats-container">
           <img src="https://github-readme-stats.vercel.app/api?username=sonuramashishnpm&show_icons=true&theme=radical" alt="Sonu Kumar's GitHub Stats" loading="lazy">
           <img src="https://github-readme-streak-stats.herokuapp.com/?user=sonuramashishnpm&theme=radical" alt="Sonu Kumar's GitHub Streak" loading="lazy">
         </div>
-
         <div class="mantra-box">
           <h2>🧠 "Rural-Zero to Revolution"</h2>
           <p>“No matter where you start, you can be the change. I choose code, courage, and kindness. Let's build... together.”</p>
@@ -629,10 +723,44 @@
     </div>
    </div>
   </section>
-
+  </div>
+  <div id="sect1">
+    <section>
+      <button class="login-btn" onclick="login()">Login</button>
+      <form action="#" onsubmit="handleUpload(event); return false;">
+        <label for="video">Upload Video:</label>
+        <input type="file" id="video" name="video" accept="video/*" required />
+        <label for="thumbnail">Upload Thumbnail:</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required />
+        <button type="submit">Upload</button>
+      </form>
+    </section>
+  </div>
   <footer>
     <p>© 2026 NPM YouTube Automation | Powered by npmai • Made with ❤️ for creators worldwide. Open source & free forever.</p>
   </footer>
-
 </body>
+<script>
+  function toggle(){
+    const sect2 = document.getElementById("sect2");
+    const sect1 = document.getElementById("sect1");
+    sect2.style.display = "block";
+    sect1.style.display = "none";
+  }
+  function toggle1(){
+    const sect1 = document.getElementById("sect1");
+    const sect2 = document.getElementById("sect2");
+    sect1.style.display = "flex";
+    sect2.style.display = "none";
+  }
+  function login() {
+    // Placeholder for login functionality
+    alert("Login functionality would be implemented here.");
+  }
+  function handleUpload(event) {
+    // Placeholder for upload handling
+    event.preventDefault();
+    alert("Upload functionality would be implemented here.");
+  }
+</script>
 </html>
