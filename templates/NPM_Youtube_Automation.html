@@ -481,12 +481,7 @@
   </style>
   <script>
 function login() {
-  fetch("/login")
-    .then(res => {
-      if (res.ok) {
-        alert("Logged in with YouTube");
-      }
-    });
+  window.location.href="/login";
 }
 
 function send() {
@@ -779,6 +774,7 @@ function toggle1() {
   </footer>
 </body>
 </html>
+
 
 
 
