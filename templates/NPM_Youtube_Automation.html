@@ -479,6 +479,44 @@
       #sect1 section { padding: 2rem; }
     }
   </style>
+  <script>
+function login() {
+  fetch("/login")
+    .then(res => {
+      if (res.ok) {
+        alert("Logged in with YouTube");
+      }
+    });
+}
+
+function send() {
+  const videoInput = document.getElementById("video");
+  const thumbInput = document.getElementById("thumbnail");
+
+  const formData = new FormData();
+  formData.append("video", videoInput.files[0]);
+  formData.append("thumbnail", thumbInput.files[0]);
+
+  fetch("/send", {
+    method: "POST",
+    body: formData
+  }).then(res => {
+    if (res.ok) {
+      alert("Upload started!");
+    }
+  });
+}
+
+function toggle() {
+  document.getElementById("sect2").style.display = "block";
+  document.getElementById("sect1").style.display = "none";
+}
+
+function toggle1() {
+  document.getElementById("sect1").style.display = "flex";
+  document.getElementById("sect2").style.display = "none";
+}
+</script>
 </head>
 <body>
   <!-- Background Video -->
@@ -740,44 +778,7 @@
     <p>© 2026 NPM YouTube Automation | Powered by npmai • Made with ❤️ for creators worldwide. Open source & free forever.</p>
   </footer>
 </body>
-<script>
-function login() {
-  fetch("/login")
-    .then(res => {
-      if (res.ok) {
-        alert("Logged in with YouTube");
-      }
-    });
-}
-
-function send() {
-  const videoInput = document.getElementById("video");
-  const thumbInput = document.getElementById("thumbnail");
-
-  const formData = new FormData();
-  formData.append("video", videoInput.files[0]);
-  formData.append("thumbnail", thumbInput.files[0]);
-
-  fetch("/send", {
-    method: "POST",
-    body: formData
-  }).then(res => {
-    if (res.ok) {
-      alert("Upload started!");
-    }
-  });
-}
-
-function toggle() {
-  document.getElementById("sect2").style.display = "block";
-  document.getElementById("sect1").style.display = "none";
-}
-
-function toggle1() {
-  document.getElementById("sect1").style.display = "flex";
-  document.getElementById("sect2").style.display = "none";
-}
-</script>
 </html>
+
 
 
