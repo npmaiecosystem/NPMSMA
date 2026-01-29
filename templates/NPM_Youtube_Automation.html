@@ -741,54 +741,43 @@
   </footer>
 </body>
 <script>
-  function login(){
-    fetch("/login"){
-      .then(response =>{
-        if (response.ok){
-          console.log("Logged in");
-        }
+function login() {
+  fetch("/login")
+    .then(res => {
+      if (res.ok) {
+        alert("Logged in with YouTube");
       }
-            }
-  }
-
-  function send(){
-    video=document.getElementById("video")
-    thumbnail=document.getElementId("thumbnail")
-    let formdata= new FormData();
-    formdata.append("video",video)
-    formdata.apend("thumbnail",thumbnail)
-    fetch("/send",{
-      method: 'POST',
-      body:formdata
     });
-    
-    .then (response =>{
-      if (response.ok){
-        console.log("Video and thumbnail send")
-      }});
-    
-    
-  function toggle(){
-    const sect2 = document.getElementById("sect2");
-    const sect1 = document.getElementById("sect1");
-    sect2.style.display = "block";
-    sect1.style.display = "none";
-  }
-  function toggle1(){
-    const sect1 = document.getElementById("sect1");
-    const sect2 = document.getElementById("sect2");
-    sect1.style.display = "flex";
-    sect2.style.display = "none";
-  }
-  function login() {
-    // Placeholder for login functionality
-    alert("Login functionality would be implemented here.");
-  }
-  function handleUpload(event) {
-    // Placeholder for upload handling
-    event.preventDefault();
-    alert("Upload functionality would be implemented here.");
-  }
+}
+
+function send() {
+  const videoInput = document.getElementById("video");
+  const thumbInput = document.getElementById("thumbnail");
+
+  const formData = new FormData();
+  formData.append("video", videoInput.files[0]);
+  formData.append("thumbnail", thumbInput.files[0]);
+
+  fetch("/send", {
+    method: "POST",
+    body: formData
+  }).then(res => {
+    if (res.ok) {
+      alert("Upload started!");
+    }
+  });
+}
+
+function toggle() {
+  document.getElementById("sect2").style.display = "block";
+  document.getElementById("sect1").style.display = "none";
+}
+
+function toggle1() {
+  document.getElementById("sect1").style.display = "flex";
+  document.getElementById("sect2").style.display = "none";
+}
 </script>
 </html>
+
 
