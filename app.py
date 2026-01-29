@@ -64,7 +64,7 @@ def login():
             "credentials.json",
             scopes=["https://www.googleapis.com/auth/youtube.force-ssl"]
             )
-        flow.redirect_uri = url_for('callback', _external=True)
+        flow.redirect_uri = url_for('https://npmyt.onrender.com/callback', _external=True)
 
         authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true')
         session['state'] = state
