@@ -732,7 +732,7 @@
         <input type="file" id="video" name="video" accept="video/*" required />
         <label for="thumbnail">Upload Thumbnail:</label>
         <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required />
-        <button type="submit">Upload</button>
+        <button type="submit" onclick="send()">Upload</button>
       </form>
     </section>
   </div>
@@ -741,6 +741,33 @@
   </footer>
 </body>
 <script>
+  function login(){
+    fetch("/login"){
+      .then(response =>{
+        if (response.ok){
+          console.log("Logged in");
+        }
+      }
+            }
+  }
+
+  function send(){
+    video=document.getElementById("video")
+    thumbnail=document.getElementId("thumbnail")
+    let formdata= new FormData();
+    formdata.append("video",video)
+    formdata.apend("thumbnail",thumbnail)
+    fetch("/send",{
+      method: 'POST',
+      body:formdata
+    });
+    
+    .then (response =>{
+      if (response.ok){
+        console.log("Video and thumbnail send")
+      }});
+    
+    
   function toggle(){
     const sect2 = document.getElementById("sect2");
     const sect1 = document.getElementById("sect1");
@@ -764,3 +791,4 @@
   }
 </script>
 </html>
+
