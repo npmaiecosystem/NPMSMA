@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NPM YouTube Automation - Empower Creators with AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1a1a2e);
+      color: #e0e0e0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    #sect2{
+      display:none;
+    }
+    a { color:#1ed760; text-decoration:none; transition:0.3s; }
+    a:hover { color:#ffffff; }
+    /* Background Video - Logical: Use muted, loop, low opacity for focus on content */
+    #bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 30, 0.65); /* Darker overlay for better readability */
+      z-index: -1;
+    }
+    /* Hero - Logical: Eye-catching intro with call-to-action proximity */
+    .hero {
+      padding: 6rem 6vw 5rem;
+      text-align: center; /* Centered for impact */
+      position: relative;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .hero h1 {
+      font-size: 50px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #1ed760, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInScale 1.2s ease forwards;
+      margin-bottom: 1rem;
+      margin-top: 0px;
+      margin-left: 0px;
+      text-align: center;
+      padding: 0px;
+    }
+    .hero .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .toggle-btn{
+      background-color: #1ed760;
+      color: #000000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 0;
+      margin-left: 0px;
+      margin-top: 0;
+      padding: 16px 32px;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn:hover {
+      background-color: #16a34a;
+      transform: translateY(-2px);
+    }
+    .motto {
+      font-size: 1.4rem;
+      color: #1ed760;
+      font-weight: 500;
+      animation: fadeInScale 1.5s ease forwards 0.2s;
+      margin-bottom: 2rem;
+    }
+    .intro-text {
+      font-size: 1.15rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      text-align: center;
+      line-height: 1.7;
+      animation: fadeInScale 1.8s ease forwards 0.4s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    #sect1{
+      margin-left: 0;
+      margin-top: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+      padding: 2rem 6vw;
+    }
+    #sect1 section {
+      background: rgba(30, 30, 50, 0.5);
+      border: 1px solid rgba(30, 215, 96, 0.2);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    #sect1 .login-btn {
+      background-color: #1ed760;
+      color: #000000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 2rem;
+      margin-left: 0px;
+      margin-top: 0;
+      padding: 16px 32px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    #sect1 .login-btn:hover {
+      background-color: #16a34a;
+      transform: translateY(-2px);
+    }
+    #sect1 form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 0;
+    }
+    #sect1 label {
+      text-align: left;
+      font-weight: 500;
+      color: #1ed760;
+      margin-top: 0;
+    }
+    #sect1 input[type="file"] {
+      padding: 0.75rem;
+      border: 1px solid rgba(30, 215, 96, 0.3);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #e0e0e0;
+      width: 100%;
+    }
+    #sect1 input[type="file"]::file-selector-button {
+      background: #1ed760;
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 1rem;
+    }
+    #sect1 button[type="submit"] {
+      background: linear-gradient(45deg, #1ed760, #16a34a);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    #sect1 button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
+    }
+    @keyframes fadeInScale {
+      from { opacity:0; transform:translateY(40px) scale(0.95); }
+      to { opacity:1; transform:translateY(0) scale(1); }
+    }
+    /* Sections - Logical: Consistent padding, alternating backgrounds for visual flow */
+    section { padding: 0rem; }
+    .alt-bg { background: rgba(0,0,0,0.25); }
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #1ed760;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #1ed760;
+      margin: auto;
+      border-radius: 2px;
+    }
+    /* Grids - Logical: Responsive, hover effects for engagement */
+    .features-grid, .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .card {
+      background: rgba(30, 30, 50, 0.5);
+      border: 1px solid rgba(30, 215, 96, 0.2);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #1ed760, transparent);
+      transform: scaleX(0);
+      transition: transform 0.5s ease;
+    }
+    .card:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 25px 60px rgba(30, 215, 96, 0.25);
+      border-color: #1ed760;
+    }
+    .card:hover::before { transform: scaleX(1); }
+    .card i { font-size: 3rem; color: #1ed760; margin-bottom: 1.2rem; display: block; }
+    .card h3 { color: white; margin-bottom: 1rem; font-size: 1.4rem; }
+    .card ul, .card ol { list-style: none; padding-left: 0; }
+    .card li { margin-bottom: 0.8rem; position: relative; padding-left: 1.8rem; }
+    .card li::before { content: "→"; position: absolute; left: 0; color: #1ed760; font-weight: bold; }
+    .steps-grid .card ol { counter-reset: step-counter; }
+    .steps-grid .card li { counter-increment: step-counter; }
+    .steps-grid .card li::before {
+      content: counter(step-counter) ". ";
+      background: #1ed760;
+      color: #000;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      position: absolute;
+      left: -0.5rem;
+    }
+    /* Pro Tip & Blockquote - Logical: Standout styling for emphasis */
+    .pro-tip {
+      background: linear-gradient(135deg, rgba(30, 215, 96, 0.15), rgba(30, 215, 96, 0.05));
+      border-left: 5px solid #1ed760;
+      padding: 2rem;
+      margin: 3rem 0;
+      font-style: italic;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    /* Future Vision - Logical: Bullet list for scannability */
+    .future-vision {
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .future-vision ul { list-style: none; padding: 0; text-align: left; max-width: 700px; margin: 0 auto; }
+    .future-vision li { margin-bottom: 1.2rem; padding-left: 2rem; position: relative; font-size: 1.1rem; }
+    .future-vision li::before { content: "🌟"; position: absolute; left: 0; font-size: 1.2rem; }
+    /* Quick Start - Logical: Code block for devs, prominent download for users */
+    .quick-start {
+      background: rgba(0,0,0,0.4);
+      border-radius: 16px;
+      padding: 3rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .quick-start code {
+      background: #1a1a1a;
+      color: #1ed760;
+      padding: 1.5rem;
+      border-radius: 12px;
+      display: block;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      margin: 2rem auto;
+      max-width: 800px;
+      text-align: left;
+      border-left: 4px solid #1ed760;
+    }
+    .quick-start p { font-size: 1.1rem; margin-bottom: 1.5rem; }
+    /* Download CTA - Logical: High-contrast, animated button for conversion */
+    .download-cta {
+      text-align: center;
+      margin: 5rem 0;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, rgba(30, 215, 96, 0.1), rgba(30, 215, 96, 0.05));
+      border-radius: 20px;
+      border: 2px dashed #1ed760;
+    }
+    .big-btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #1ed760, #16a34a);
+      color: #000;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 1.3rem 3.5rem;
+      border-radius: 50px;
+      transition: all 0.4s ease;
+      box-shadow: 0 12px 35px rgba(30, 215, 96, 0.3);
+      margin: 1.5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .big-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    .big-btn:hover::before { left: 100%; }
+    .big-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 18px 45px rgba(30, 215, 96, 0.4);
+    }
+    /* Profile - Logical: Expanded, modular sections for storytelling */
+    .profile-section { padding: 6rem 6vw 4rem; }
+    .profile-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(20, 20, 40, 0.6);
+      border: 1px solid rgba(30, 215, 96, 0.3);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7);
+      transition: all 0.4s ease;
+      backdrop-filter: ;
+    }
+    .profile-container:hover { border-color: #1ed760; transform: translateY(-5px); }
+    .profile-banner {
+      background: linear-gradient(135deg, rgba(30, 215, 96, 0.1), transparent);
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(30, 215, 96, 0.2);
+    }
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+      padding: 3rem;
+      flex-wrap: wrap;
+    }
+    .profile-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #1ed760;
+      box-shadow: 0 0 40px rgba(30,215,96,0.5);
+      flex-shrink: 0;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .profile-intro h2 { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .highlight { color: #1ed760; }
+    .tagline { color:#bdbdbd; font-style:italic; margin-bottom:1rem; font-size: 1.1rem; }
+    .social-badges {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .social-badges a {
+      background: linear-gradient(45deg, #1ed760, #16a34a);
+      color: #000;
+      padding: 0.8rem 1.6rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: transform 0.3s;
+    }
+    .social-badges a:hover { transform: scale(1.05); }
+    .divider { border:0; border-top:1px solid rgba(30,215,96,0.3); margin:2rem 0; }
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+      padding: 0 3rem 2.5rem;
+    }
+    .detail-box h3 { color: #1ed760; margin-bottom: 1.2rem; font-size: 1.5rem; }
+    .detail-box h4 { font-size: 1.1rem; color: #ddd; margin-bottom: 0.8rem; font-weight: 600; }
+    .detail-box p { color: #cfcfcf; margin-bottom: 1.2rem; }
+    .full-width-box {
+      grid-column: 1 / -1;
+      background: rgba(30, 215, 96, 0.08);
+      padding: 2rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      border: 1px solid rgba(30, 215, 96, 0.3);
+    }
+    .repo-list { display: grid; gap: 1rem; }
+    .repo-item {
+      padding: 1rem;
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      font-size: 1rem;
+      border-left: 4px solid #1ed760;
+      transition: background 0.3s;
+    }
+    .repo-item:hover { background: rgba(30, 215, 96, 0.1); }
+    .stats-container {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 3rem 0;
+    }
+    .stats-container img {
+      max-width: 48%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(30, 215, 96, 0.2);
+    }
+    .mantra-box {
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid rgba(30, 215, 96, 0.3);
+      background: linear-gradient(135deg, rgba(30, 215, 96, 0.1), transparent);
+    }
+    .mantra-box h2 { color: #1ed760; margin-bottom: 1.2rem; font-size: 2rem; }
+    .mantra-box p { font-size: 1.2rem; color: #eee; font-style: italic; max-width: 900px; margin: 0 auto; line-height: 1.6; }
+    blockquote {
+      font-style: italic;
+      color: #ccc;
+      border-left: 4px solid #1ed760;
+      padding-left: 2rem;
+      margin: 2.5rem 0;
+      font-size: 1.1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: #aaa;
+      font-size: 1rem;
+      border-top: 1px solid rgba(30, 215, 96, 0.2);
+      background: rgba(0,0,0,0.3);
+    }
+    /* Responsive - Logical: Prioritize mobile readability */
+    @media (max-width: 900px) {
+      section { padding: 4rem 4vw; }
+      .profile-details { grid-template-columns: 1fr; }
+      .profile-header { justify-content: center; text-align: center; flex-direction: column; }
+      .stats-container img { max-width: 100%; }
+      .features-grid, .steps-grid { grid-template-columns: 1fr; }
+      .hero .toggle-buttons { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 4rem 3vw 3rem; }
+      .quick-start { padding: 2rem 1rem; }
+      .profile-header { padding: 2rem 1rem; }
+      #sect1 section { padding: 2rem; }
+    }
+  </style>
+  <script>
+function login() {
+  window.location.href="/login";
+}
+
+function send() {
+  const videoInput = document.getElementById("video");
+  const thumbInput = document.getElementById("thumbnail");
+
+  const formData = new FormData();
+  formData.append("video", videoInput.files[0]);
+  formData.append("thumbnail", thumbInput.files[0]);
+
+  fetch("/send", {
+    method: "POST",
+    body: formData
+  }).then(res => {
+    if (res.ok) {
+      alert("Upload started!");
+    }
+  });
+}
+
+function toggle() {
+  document.getElementById("sect2").style.display = "block";
+  document.getElementById("sect1").style.display = "none";
+}
+
+function toggle1() {
+  document.getElementById("sect1").style.display = "flex";
+  document.getElementById("sect2").style.display = "none";
+}
+</script>
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video" aria-hidden="true">
+    <source src="https://npmexplorer.netlify.app/NPM%20ai%20backgrond%20video.mp4" type="video/mp4">
+  </video>
+  <div id="overlay" aria-hidden="true"></div>
+ 
+  <!-- Hero -->
+  <section class="hero" style="margin-bottom:0px;">
+    <h1>NPM YouTube Automation</h1>
+    <div class="toggle-buttons">
+      <button class="toggle-btn" onclick="toggle1()">Web App</button>
+      <button class="toggle-btn" onclick="toggle()">Desktop App</button>
+    </div>
+    <div class="motto">Automate Uploads. Unleash Creativity.</div>
+    <p class="intro-text">Welcome to the future of content creation! This tool combines the power of <strong>AI-generated metadata</strong> with <strong>automatic YouTube uploading</strong>. Non-technical creators can now upload videos with smart titles, descriptions, and hashtags — all in one click.</p>
+  </section>
+ 
+   <div id="sect2">
+  <section class="hero" style="margin-top:0px; margin-bottom:0px;">
+   <h3 style="margin-bottom:25px;">Quick Buttons <p> Click on buttons to explore</p></h3>
+   <div class="features-grid">
+    <div class="card">
+    <a href="#How"><h3>How it Works</h3></a>
+    <h4 style="color:green;">To get to know how it work click above</h4>
+    </div>
+    <div class="card">
+    <a href="#Download"><h3>Download</h3></a>
+    <h4 style="color:green;">To download click above</h4>
+    </div>
+    <div class="card">
+    <a href="#Features"><h3>Features</h3></a>
+    <h4 style="color:green;">To get to know about Features click above</h4>
+    </div>
+    <div class="card">
+    <a href="#Developer"><h3>Developer</h3></a>
+    <h4 style="color:green;">To get to know about Developers click above</h4>
+    </div>
+    <div class="card">
+    <a href="#Knowledge"><h3>Knowledge<h3></a>
+    <h4 style="color:green;">To get to know more about this project click above</h4>
+    </div>
+  </section>
+  <!-- Features -->
+  <section>
+    <div id="Features">
+    <h2 class="section-title">✨ Features</h2>
+    <div class="features-grid">
+      <div class="card">
+        <i class="fas fa-brain"></i>
+        <h3>AI-Generated Titles</h3>
+        <ul>
+          <li>Catchy, SEO-friendly titles generated automatically.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <i class="fas fa-file-lines"></i>
+        <h3>Smart Video Descriptions</h3>
+        <ul>
+          <li>Engaging descriptions that summarize content and boost discoverability.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <i class="fas fa-hashtag"></i>
+        <h3>Viral-Ready Hashtags</h3>
+        <ul>
+          <li>Trending hashtags automatically suggested for better reach.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <h3>Automatic YouTube Upload</h3>
+        <ul>
+          <li>Upload videos directly to your channel with AI metadata applied.</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </section>
+  <!-- How It Works -->
+  <section class="alt-bg">
+    <div id="How">
+    <h2 class="section-title">⚡ How It Works</h2>
+    <div class="features-grid steps-grid">
+      <div class="card">
+        <h3>1. Provide your video file (MP4 or similar).</h3>
+        <p>Simply select your video and thumbnail via the intuitive desktop app interface.</p>
+      </div>
+      <div class="card">
+        <h3>2. AI generates <strong>title, description, and hashtags</strong> automatically.</h3>
+        <p>Leveraging Whisper for transcription and Llama 3.2 for intelligent metadata creation.</p>
+      </div>
+      <div class="card">
+        <h3>3. Authenticates securely with your YouTube account.</h3>
+        <p>Seamless OAuth integration — secure, one-time setup without manual API handling.</p>
+      </div>
+      <div class="card">
+        <h3>4. Uploads video automatically, showing progress and final video ID.</h3>
+        <p>Real-time progress tracking with instant confirmation and thumbnail application.</p>
+      </div>
+    </div>
+    </div>
+  </section>
+  <!-- No Technical Knowledge Needed -->
+  <section>
+    <div id="Knowledge">
+    <h2 class="section-title">🛠 No Technical Knowledge Needed</h2>
+    <div class="features-grid">
+      <div class="card">
+        <h3>No command-line expertise required.</h3>
+        <ul>
+          <li>Simple GUI with file selection and one-click automation.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>No API key management for end users.</h3>
+        <ul>
+          <li>Everything handled internally — just log in once.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Fully automated workflow: just select a video and press upload.</h3>
+        <ul>
+          <li>From selection to published video in under 5 minutes.</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote class="pro-tip">
+      <strong>Pro Tip:</strong> Future versions will integrate cloud uploads — record on your phone and upload instantly via AI!
+    </blockquote>
+   </div>
+  </section>
+  <!-- Future Vision -->
+  <section class="alt-bg">
+   <div id="Future">
+    <h2 class="section-title">🌟 Future Vision</h2>
+    <div class="future-vision">
+      <p>Imagine a platform where creators can:</p>
+      <ul>
+        <li>Generate AI-powered content metadata for every platform: YouTube, Instagram, TikTok, and more.</li>
+        <li>Upload directly from mobile or camera.</li>
+        <li>Track analytics and AI suggestions to optimize engagement.</li>
+        <li>Empower youth creators globally to automate tedious work and focus on storytelling.</li>
+      </ul>
+    </div>
+    </div>
+  </section>
+  <!-- Quick Start -->
+  <section>
+   <div id="Download">
+    <h2 class="section-title">🚀 Quick Start</h2>
+    <div class="quick-start">
+      <p>For developers who want to extend or customize:</p>
+      <code>Go to this link of Project Repo,<a href="https://github.com/sonuramashishnpm/NPM-Youtube-Automation"> click here:-Github Repo:-NPM Youtube Automation</a></code>
+      <p>Or, for instant use, download the pre-built desktop app (Windows EXE) — fully portable and ready to run:</p>
+      <a href="https://github.com/sonuramashishnpm/NPM-Youtube-Automation/releases/download/v1.0/NPM_Youtube_Automation.zip" class="big-btn" download>
+        <i class="fas fa-download"></i> Download NPM YouTube Automation (Free)
+      </a>
+      <p style="margin-top:2rem; color:#aaa; font-size:0.95rem;">
+        Unzip → Run the .exe → On first launch, place <code>client_secrets.json</code> (from Google Console) in the app folder for YouTube authentication.
+      </p>
+    </div>
+   </div>
+  </section>
+  <!-- Enhanced Profile Section -->
+  <section class="profile-section alt-bg">
+    <div id="Developer">
+    <div class="profile-container">
+      <div class="profile-banner">
+        <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&duration=4000&pause=1000&color=FE278B&center=true&vCenter=true&width=700&lines=%F0%9F%87%A7%F0%9F%87%AE+Bihar+Viral+Boy+Sonu+Kumar+%E2%9C%A8;14+y%2Fold+Tech+Changemaker+%F0%9F%94%A5;Open+Source+AI%2C+Votes%2C+Education+Innovation!;TEDx+Speaker+%26+Global+Impact+Maker!" alt="Animated Banner: Bihar Viral Boy Sonu Kumar | 14 y/old Tech Changemaker | Open Source AI, Votes, Education Innovation! | TEDx Speaker & Global Impact Maker" loading="lazy">
+      </div>
+      <div style="padding: 0 3rem 3rem;">
+        <div class="profile-header">
+          <img src="https://i.ibb.co/rGJ6bGHc/Sonu2.jpg" alt="Sonu Kumar, 14-year-old tech innovator from Bihar" class="profile-img" loading="lazy">
+          <div class="profile-intro">
+            <h2>Hi, I'm <span class="highlight">Sonu Kumar</span>! 🇮🇳🚀</h2>
+            <p class="tagline">14-year-old tech prodigy & changemaker from Nalanda, Bihar.</p>
+            <blockquote style="color:#cfcfcf; border-left:3px solid #1ed760; padding-left:1.5rem; font-style:italic; margin-top:1.5rem;">
+              From rural school to TEDx, building open source platforms and fixing democracy—one line of code at a time.
+            </blockquote>
+          </div>
+        </div>
+        <div class="social-badges">
+          <a href="https://facebook.com/share/19dvhX1mH7/" target="_blank" rel="noopener"><i class="fab fa-facebook"></i> Facebook 405k+</a>
+          <a href="https://youtu.be/qWTkKsegx9c" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> TEDx Talk</a>
+          <a href="https://pypi.org/project/npmai" target="_blank" rel="noopener"><i class="fab fa-python"></i> PyPI</a>
+          <a href="mailto:sonu.kr.nalanda@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+          <a href="https://github.com/sonuramashishnpm" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+        <hr class="divider">
+        <div class="profile-details">
+          <div class="detail-box">
+            <h3>🔥 Who Am I?</h3>
+            <h4><strong>“Bihar Viral Boy”</strong> — Challenged Chief Minister & inspired millions at age 11.</h4>
+            <h4><strong>TEDx Speaker (13)</strong> — Shared "Zid aur Junoon" journey on the global stage.</h4>
+            <h4><strong>Open Source Innovator</strong> — Creating tools for education and democracy.</h4>
+            <h4><strong>Self-taught Engineer</strong> — No formal CS background, just pure grit and internet.</h4>
+          </div>
+          <div class="detail-box">
+            <h3>✨ Tech Toolbox</h3>
+            <img src="https://skillicons.dev/icons?i=python,flask,streamlit,html,css,js,solidity,raspberrypi,selenium,git,github,docker,ai" alt="Tech stack icons: Python, Flask, Streamlit, HTML, CSS, JS, Solidity, Raspberry Pi, Selenium, Git, GitHub, Docker, AI" loading="lazy" />
+          </div>
+        </div>
+        <div class="full-width-box">
+          <h3>🌟 Major Projects & Repos</h3>
+          <div class="repo-list">
+            <div class="repo-item"><strong>npmexplorer.netlify.app:</strong> Educational notes, 20+ news sources, AI insights.</div>
+            <div class="repo-item"><strong>npmexplorer-flask:</strong> Automated Gemini/Google LLM search (No API!).</div>
+            <div class="repo-item"><strong>npmai:</strong> LangChain-based wrapper for Grok, ChatGPT, Gemini, Copilot.</div>
+            <div class="repo-item"><strong>NPM-Edu-AI Helper:</strong> Free large-file study tool for students.</div>
+            <div class="repo-item"><strong>NPM-Youtube-Automation:</strong> Fully automated video upload workflow.</div>
+            <div class="repo-item"><strong>Blockchain Voting:</strong> Tamper-proof hardware-secure election system.</div>
+            <div class="repo-item"><strong>NPM Legal AI:</strong> Free legal intelligence toolkit.</div>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="detail-box">
+            <h3>💫 Achievements</h3>
+            <h4>405K+ Facebook Followers.</h4>
+            <h4>Allen Career Institute 100% Scholarship.</h4>
+            <h4>Supported by Lok Sabha Speaker & MIT/Oxford circles.</h4>
+          </div>
+          <div class="detail-box">
+            <h3>💬 Social Impact</h3>
+            <p>Building a 400K+ youth movement. Blending rural activism with world-class tech to create ethical, free AI tools for "broke students."</p>
+          </div>
+        </div>
+        <div class="full-width-box">
+          <h3>🏗️ Mission & Goals</h3>
+          <p>Democratize education, AI, & civic tech for everyone. Give rural students a global stage and affordable tools. Transform adversity into action.</p>
+        </div>
+        <div class="stats-container">
+          <img src="https://github-readme-stats.vercel.app/api?username=sonuramashishnpm&show_icons=true&theme=radical" alt="Sonu Kumar's GitHub Stats" loading="lazy">
+          <img src="https://github-readme-streak-stats.herokuapp.com/?user=sonuramashishnpm&theme=radical" alt="Sonu Kumar's GitHub Streak" loading="lazy">
+        </div>
+        <div class="mantra-box">
+          <h2>🧠 "Rural-Zero to Revolution"</h2>
+          <p>“No matter where you start, you can be the change. I choose code, courage, and kindness. Let's build... together.”</p>
+        </div>
+      </div>
+    </div>
+   </div>
+  </section>
+  </div>
+  <div id="sect1">
+    <section>
+      <button class="login-btn" onclick="login()">Login</button>
+      <form action="#" onsubmit="handleUpload(event); return false;">
+        <label for="video">Upload Video:</label>
+        <input type="file" id="video" name="video" accept="video/*" required />
+        <label for="thumbnail">Upload Thumbnail:</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required />
+        <button type="submit" onclick="send()">Upload</button>
+      </form>
+    </section>
+  </div>
+  <footer>
+    <p>© 2026 NPM YouTube Automation | Powered by npmai • Made with ❤️ for creators worldwide. Open source & free forever.</p>
+  </footer>
+</body>
+</html>
