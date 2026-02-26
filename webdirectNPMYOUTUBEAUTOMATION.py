@@ -1,3 +1,9 @@
+"""
+RAW PYTHON CODE JUST FOR BASIC CONCEPTUAL UNDERSTANDING THIS IS WITH MODIFIED VERSION IS USED IN PRODUCTION YOU CAN SEE
+"""
+
+
+
 from npmai import Ollama
 from langchain_core.prompts import PromptTemplate
 from pydantic import BaseModel, Field
