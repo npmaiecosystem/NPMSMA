@@ -1,6 +1,9 @@
-# 🚀 Auto-YouTube Uploader with AI
+# 🚀NPM Youtube Automation 
 
 Welcome to the future of content creation! This tool combines the power of **AI-generated metadata** with **automatic YouTube uploading**. Non-technical creators can now upload videos with smart titles, descriptions, and hashtags — all in one click.
+
+## To understand repo project with AI in detail with full documentation visit here:-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sonuramashishnpm/NPM-Youtube-Automation)
 
 ## ✨ Features
 
