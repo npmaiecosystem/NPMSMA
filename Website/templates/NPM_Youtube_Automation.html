@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NPM YouTube Automation - Empower Creators with AI</title>
+  <title>NPM Social Media Automation(NPM-SMA) - Empower Creators with AI</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -480,7 +480,7 @@
     }
   </style>
   <script>
-function login() {
+function ytlogin() {
   window.location.href="/login";
 }
 
@@ -522,13 +522,13 @@ function toggle1() {
  
   <!-- Hero -->
   <section class="hero" style="margin-bottom:0px;">
-    <h1>NPM YouTube Automation</h1>
+    <h1>NPM Social Media Automation(NPM-SMA)</h1>
     <div class="toggle-buttons">
       <button class="toggle-btn" onclick="toggle1()">Web App</button>
       <button class="toggle-btn" onclick="toggle()">Desktop App</button>
     </div>
     <div class="motto">Automate Uploads. Unleash Creativity.</div>
-    <p class="intro-text">Welcome to the future of content creation! This tool combines the power of <strong>AI-generated metadata</strong> with <strong>automatic YouTube uploading</strong>. Non-technical creators can now upload videos with smart titles, descriptions, and hashtags — all in one click.</p>
+    <p class="intro-text">Welcome to the future of content creation! This tool combines the power of <strong>AI-generated metadata</strong> with <strong>automatic content uploading on major social media platforms</strong>. Non-technical creators can now upload videos with smart titles, descriptions, and hashtags — all in one click, without writing meta-data.</p>
   </section>
  
    <div id="sect2">
@@ -759,7 +759,12 @@ function toggle1() {
   </div>
   <div id="sect1">
     <section>
-      <button class="login-btn" onclick="login()">Login</button>
+      <button class="login-btn" onclick="ytlogin()">Login with Youtube</button>
+      <button class="login-btn" onclick="fblogin()">Login with Facebook</button>
+      <button class="login-btn" onclick="iglogin()">Login with Instagram</button>
+      <button class="login-btn" onclick="llogin()">Login with Linkedin</button>
+      <button class="login-btn" onclick="thlogin()">Login with Thread</button>
+      <button class="login-btn" onclick="tilogin()">Login with Tiktok</button>
       <form action="#" onsubmit="handleUpload(event); return false;">
         <label for="video">Upload Video:</label>
         <input type="file" id="video" name="video" accept="video/*" required />
@@ -770,7 +775,7 @@ function toggle1() {
     </section>
   </div>
   <footer>
-    <p>© 2026 NPM YouTube Automation | Powered by npmai • Made with ❤️ for creators worldwide. Open source & free forever.</p>
+    <p>© 2026 NPM Social Media Automation(NPM-SMA) | Powered by npmai • Made with ❤️ for creators worldwide. Open source & free everyone.</p>
   </footer>
 </body>
 </html>
