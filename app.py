@@ -20,6 +20,10 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "ac7b18cb163c8dc0640da6f661b
 def index():
   return render_template("NPM_Youtube_Automation.html")
 
+@app.route("/privacy")
+def privacy():
+  return render_template("privacy.html")
+
 def local_video(file_path,thumbnail):
   files=file_path
   thumbnail=thumbnail
