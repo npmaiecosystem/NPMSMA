@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NPM Social Media Automation (NPM-SMA) — AI Uploads Across Every Platform</title>
+
+<!-- ===================== SEO / AEO ===================== -->
+<meta name="description" content="NPM-SMA (NPM Social Media Automation) lets creators upload one video and automatically post AI-written titles, descriptions and hashtags to Facebook, Instagram, Threads, LinkedIn, TikTok and YouTube — no technical knowledge required. Open API for Python, JavaScript and Java developers." />
+<meta name="keywords" content="NPM-SMA, NPM Social Media Automation, AI social media uploader, automatic video posting, AI hashtags generator, AI video title generator, multi platform video upload API, NPMAI Ecosystem, Sonu Kumar founder" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="NPMAI Ecosystem" />
+<link rel="canonical" href="https://sonuramashishnpm-npmsma.hf.space/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="NPM Social Media Automation (NPM-SMA)" />
+<meta property="og:description" content="Upload once. NPM-SMA writes the title, description and hashtags with AI, then posts your video to six platforms automatically." />
+<meta property="og:site_name" content="NPM-SMA · NPMAI Ecosystem" />
+<meta property="og:locale" content="en_IN" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="NPM Social Media Automation (NPM-SMA)" />
+<meta name="twitter:description" content="One upload, six platforms, zero manual metadata. AI-generated titles, descriptions and hashtags, posted automatically." />
+
+<!-- Structured data: helps AI assistants and search engines understand the product, the API and the founder -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "NPM Social Media Automation (NPM-SMA)",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "description": "NPM-SMA generates AI titles, descriptions and hashtags for a video and automatically publishes it to Facebook, Instagram, Threads, LinkedIn, TikTok and YouTube through a single upload.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "AI-generated titles, descriptions and hashtags",
+        "One-click multi-platform publishing",
+        "OAuth connections to Facebook, Instagram, Threads, LinkedIn, TikTok and YouTube",
+        "Direct HTTP API for Python, JavaScript and Java integrations"
+      ],
+      "creator": { "@type": "Organization", "name": "NPMAI Ecosystem", "founder": { "@id": "#founder" } }
+    },
+    {
+      "@type": "Person",
+      "@id": "#founder",
+      "name": "Sonu Kumar",
+      "jobTitle": "Founder, NPMAI Ecosystem",
+      "description": "14-year-old self-taught programmer and TEDx speaker from Nalanda, Bihar, India, who founded the NPMAI Ecosystem and builds open-source AI and civic-tech tools.",
+      "url": "https://npmai.netlify.app",
+      "sameAs": ["https://npmai.netlify.app", "https://github.com/sonuramashishnpm"]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I call NPM-SMA without using the web interface?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Send a multipart POST request with a video file and one or more platform auth codes to the /upload endpoint from Python, JavaScript or Java — the UI is optional."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+  :root{
+    --ink:#05070c;
+    --panel:rgba(13,20,33,0.62);
+    --panel-solid:#0d1521;
+    --line:rgba(30,215,96,0.18);
+    --line-strong:rgba(30,215,96,0.4);
+    --green:#1ed760;
+    --green-deep:#0f9c4c;
+    --violet:#7c5cff;
+    --text:#eef3f1;
+    --muted:#93a3ab;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', 'Segoe UI', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--font-body);
+    background:var(--ink);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    line-height:1.65;
+  }
+  #sect2{ display:none; }
+  a{ color:var(--green); text-decoration:none; transition:.25s; }
+  a:hover{ color:#fff; }
+  ::selection{ background:var(--green); color:#02170a; }
+  :focus-visible{ outline:2px solid var(--green); outline-offset:3px; }
+  .skip-link{ position:absolute; left:-999px; top:0; background:var(--green); color:#04170a; padding:.6rem 1rem; z-index:200; font-weight:600; }
+  .skip-link:focus{ left:1rem; top:1rem; }
+
+  /* ---------- animated network backdrop (replaces the old bg-video) ---------- */
+  #bg-canvas{ position:fixed; inset:0; width:100%; height:100%; z-index:-2; background:
+      radial-gradient(1100px 700px at 18% -10%, rgba(124,92,255,0.16), transparent 60%),
+      radial-gradient(1200px 800px at 85% 110%, rgba(30,215,96,0.14), transparent 60%),
+      var(--ink);
+  }
+  #overlay{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:linear-gradient(180deg, rgba(5,7,12,0.15) 0%, rgba(5,7,12,0.55) 55%, rgba(5,7,12,0.92) 100%);
+  }
+
+  /* ---------- nav ---------- */
+  .site-nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem 5vw;
+    background:rgba(5,7,12,0.7); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ font-family:var(--font-display); font-weight:700; font-size:1.15rem; letter-spacing:.02em; color:var(--text); display:flex; align-items:center; gap:.5rem; }
+  .brand .dot{ width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 12px var(--green); }
+  .nav-links{ display:flex; gap:1.6rem; flex-wrap:wrap; }
+  .nav-links button{
+    background:none; border:none; color:var(--muted); font-family:var(--font-body);
+    font-size:.92rem; cursor:pointer; padding:.3rem 0; position:relative;
+  }
+  .nav-links button:hover{ color:var(--text); }
+  .nav-links button::after{ content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:var(--green); transition:width .25s; }
+  .nav-links button:hover::after{ width:100%; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:5.5rem 6vw 3.5rem; text-align:center; position:relative; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--green); border:1px solid var(--line-strong); border-radius:999px;
+    display:inline-block; padding:.4rem 1rem; margin-bottom:1.4rem; background:rgba(30,215,96,0.06);
+  }
+  .hero h1{
+    font-family:var(--font-display); font-size:clamp(2.1rem, 5vw, 3.4rem); font-weight:700; line-height:1.12;
+    background:linear-gradient(100deg,#ffffff 10%, var(--green) 55%, var(--violet) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    animation:fadeInScale 1s ease forwards; margin-bottom:1.1rem;
+  }
+  .hero .toggle-buttons{ display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
+  .toggle-btn{
+    background:var(--green); color:#04170a; border:none; border-radius:8px; cursor:pointer;
+    font-family:var(--font-body); font-weight:600; font-size:15px; padding:.9rem 1.9rem; transition:all .25s ease;
+    box-shadow:0 8px 24px rgba(30,215,96,0.18);
+  }
+  .toggle-btn:hover{ background:#fff; transform:translateY(-2px); box-shadow:0 12px 30px rgba(30,215,96,0.3); }
+  .motto{ font-size:1.2rem; color:var(--green); font-weight:500; margin-bottom:1.6rem; font-family:var(--font-display); }
+  .intro-text{
+    font-size:1.05rem; max-width:820px; margin:0 auto 2.5rem; text-align:center; color:var(--muted);
+    opacity:0; animation:fadeInScale 1.4s ease forwards .3s;
+  }
+  .intro-text strong{ color:var(--text); }
+
+  /* ---------- studio (sect1) ---------- */
+  #sect1{ display:flex; justify-content:center; align-items:center; flex-direction:column; min-height:70vh; padding:1rem 6vw 4rem; gap:1.8rem; }
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:18px;
+    padding:2.2rem; max-width:700px; width:100%; backdrop-filter:blur(14px);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .panel h3{ color:var(--green); margin-bottom:.4rem; font-size:1.2rem; text-align:center; font-family:var(--font-display); }
+  .panel > p{ color:var(--muted); font-size:.85rem; text-align:center; margin-bottom:1.5rem; }
+  .platform-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1rem; }
+  .platform-btn{
+    display:flex; flex-direction:column; align-items:center; gap:.4rem; padding:1rem .5rem;
+    border:1px solid rgba(255,255,255,0.08); border-radius:12px; background:rgba(0,0,0,0.35);
+    cursor:pointer; transition:all .25s ease; color:var(--text); font-size:.85rem; font-weight:500;
+    font-family:var(--font-body);
+  }
+  .platform-btn i{ font-size:1.7rem; }
+  .platform-btn:hover{ transform:translateY(-3px); border-color:var(--green); }
+  .platform-btn.connected{ border-color:var(--green); background:rgba(30,215,96,0.14); color:var(--green); }
+  .connected-label{ font-size:.65rem; color:var(--green); display:none; }
+  .platform-btn.connected .connected-label{ display:block; }
+  .platform-btn[data-platform="facebook"] i{ color:#1877f2; }
+  .platform-btn[data-platform="instagram"] i{ color:#e1306c; }
+  .platform-btn[data-platform="thread"] i{ color:#ffffff; }
+  .platform-btn[data-platform="linkedin"] i{ color:#0a66c2; }
+  .platform-btn[data-platform="tiktok"] i{ color:#ff0050; }
+  .platform-btn[data-platform="youtube"] i{ color:#ff0000; }
+  #timer-warning{
+    display:none; background:rgba(255,193,7,0.12); border:1px solid #ffc107; border-radius:10px;
+    padding:.75rem 1rem; color:#ffc107; font-size:.85rem; text-align:center; margin-top:1rem;
+  }
+  #sect1 section.panel{ text-align:center; }
+  #sect1 form{ display:flex; flex-direction:column; gap:1.4rem; }
+  #sect1 label{ text-align:left; font-weight:500; color:var(--green); font-size:.92rem; }
+  #sect1 input[type="file"]{
+    padding:.75rem; border:1px solid var(--line-strong); border-radius:8px;
+    background:rgba(0,0,0,0.4); color:var(--text); width:100%;
+  }
+  #sect1 input[type="file"]::file-selector-button{
+    background:var(--green); color:#04170a; border:none; padding:.5rem 1rem; border-radius:5px;
+    cursor:pointer; margin-right:1rem; font-weight:600;
+  }
+  #sect1 button[type="submit"]{
+    background:linear-gradient(45deg,var(--green),var(--green-deep)); color:#04170a; border:none;
+    border-radius:8px; cursor:pointer; font-size:17px; font-weight:700; padding:1rem;
+    transition:all .25s ease; margin-top:.6rem; font-family:var(--font-display);
+  }
+  #sect1 button[type="submit"]:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(30,215,96,0.3); }
+  #sect1 button[type="submit"]:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+  #upload-status{
+    display:none; margin-top:1rem; padding:1rem; border-radius:8px;
+    background:rgba(30,215,96,0.08); border:1px solid var(--line-strong); font-size:.9rem;
+    color:var(--green); text-align:center;
+  }
+  #toast{
+    position:fixed; top:20px; right:20px; padding:15px 20px; border-radius:8px; color:#fff; z-index:9999;
+    font-size:.9rem; opacity:0; transition:opacity .3s ease; pointer-events:none; max-width:300px;
+  }
+  #toast.show{ opacity:1; }
+  #toast.success{ background:var(--green); color:#04170a; }
+  #toast.error{ background:#ef4444; }
+  #toast.info{ background:#3b82f6; }
+
+  @keyframes fadeInScale{ from{ opacity:0; transform:translateY(40px) scale(.96);} to{ opacity:1; transform:translateY(0) scale(1);} }
+
+  /* ---------- generic sections ---------- */
+  section{ padding:0; }
+  .alt-bg{ background:rgba(255,255,255,0.015); }
+  .section-inner{ padding:5rem 6vw; }
+  .section-title{
+    text-align:center; font-family:var(--font-display); font-size:clamp(1.7rem,3.4vw,2.4rem);
+    margin-bottom:.6rem; color:var(--text); font-weight:700;
+  }
+  .section-sub{ text-align:center; color:var(--muted); max-width:640px; margin:0 auto 3rem; }
+  .section-title::after{ content:''; display:block; width:56px; height:3px; background:var(--green); margin:1rem auto 0; border-radius:2px; }
+
+  .features-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.6rem; }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:2.2rem;
+    transition:all .4s ease; backdrop-filter:blur(12px); position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-8px); box-shadow:0 25px 50px rgba(30,215,96,0.16); border-color:var(--line-strong); }
+  .card i{ font-size:2.4rem; color:var(--green); margin-bottom:1rem; display:block; }
+  .card h3{ color:#fff; margin-bottom:.8rem; font-size:1.2rem; font-family:var(--font-display); }
+  .card ul{ list-style:none; padding-left:0; color:var(--muted); }
+  .card li{ margin-bottom:.7rem; position:relative; padding-left:1.6rem; }
+  .card li::before{ content:"→"; position:absolute; left:0; color:var(--green); font-weight:bold; }
+  .quick-grid .card{ text-align:center; }
+  .quick-grid .card h3{ font-size:1.1rem; }
+  .quick-grid .card h4{ font-weight:500; font-size:.85rem; color:var(--green); margin-top:.4rem; }
+
+  /* ---------- docs ---------- */
+  .docs-intro{ max-width:760px; margin:0 auto 2.6rem; color:var(--muted); text-align:center; }
+  .docs-endpoint{
+    font-family:var(--font-mono); font-size:.85rem; color:var(--green); background:rgba(30,215,96,0.08);
+    border:1px solid var(--line-strong); border-radius:8px; padding:.5rem .9rem; display:inline-block; margin:0 auto 2rem;
+  }
+  .docs-endpoint-wrap{ text-align:center; }
+  .lang-tabs{ display:flex; gap:.6rem; justify-content:center; margin-bottom:1.6rem; flex-wrap:wrap; }
+  .lang-tab{
+    font-family:var(--font-mono); font-size:.85rem; background:rgba(255,255,255,0.04); color:var(--muted);
+    border:1px solid var(--line); border-radius:8px; padding:.55rem 1.1rem; cursor:pointer; transition:.2s;
+  }
+  .lang-tab.active{ color:var(--green); border-color:var(--green); background:rgba(30,215,96,0.1); }
+  .code-panel{
+    background:#070b12; border:1px solid var(--line); border-radius:14px; padding:1.6rem;
+    max-width:840px; margin:0 auto; overflow-x:auto;
+  }
+  .code-panel pre{ font-family:var(--font-mono); font-size:.84rem; color:#d7e6dc; line-height:1.7; white-space:pre; }
+  .code-panel[data-lang]{ display:none; }
+  .code-panel.visible{ display:block; }
+  .docs-fields{ max-width:840px; margin:2.4rem auto 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+  .docs-field{ border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; background:rgba(255,255,255,0.02); }
+  .docs-field code{ font-family:var(--font-mono); color:var(--green); font-size:.82rem; }
+  .docs-field p{ color:var(--muted); font-size:.82rem; margin-top:.35rem; }
+
+  /* ---------- founder ---------- */
+  .founder-wrap{
+    max-width:960px; margin:0 auto; display:grid; grid-template-columns:220px 1fr; gap:2.4rem;
+    background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:2.6rem; backdrop-filter:blur(12px);
+  }
+  .founder-avatar{
+    width:180px; height:180px; border-radius:50%; margin:0 auto;
+    background:linear-gradient(135deg, var(--green), var(--violet)); display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:3.2rem; font-weight:700; color:#04170a;
+  }
+  .founder-name{ font-family:var(--font-display); font-size:1.6rem; color:#fff; margin-bottom:.2rem; }
+  .founder-role{ color:var(--green); font-size:.95rem; margin-bottom:1.1rem; }
+  .founder-bio p{ color:var(--muted); margin-bottom:.9rem; font-size:.95rem; }
+  .founder-stats{ display:flex; gap:1.6rem; margin-top:1.4rem; flex-wrap:wrap; }
+  .founder-stat{ text-align:left; }
+  .founder-stat b{ display:block; font-family:var(--font-display); font-size:1.3rem; color:var(--green); }
+  .founder-stat span{ font-size:.78rem; color:var(--muted); }
+  .founder-links{ margin-top:1.4rem; display:flex; gap:1rem; flex-wrap:wrap; }
+  .founder-links a{ font-size:.85rem; border:1px solid var(--line-strong); padding:.45rem .9rem; border-radius:8px; }
+  .founder-links a:hover{ background:rgba(30,215,96,0.1); }
+  @media(max-width:720px){ .founder-wrap{ grid-template-columns:1fr; text-align:center; } .founder-links{ justify-content:center; } .founder-stats{ justify-content:center; } }
+
+  footer{
+    text-align:center; padding:3.5rem 1rem; color:var(--muted); font-size:.9rem;
+    border-top:1px solid var(--line); background:rgba(0,0,0,0.3);
+  }
+
+  @media(max-width:900px){ .features-grid{ grid-template-columns:1fr; } .hero .toggle-buttons{ flex-direction:column; align-items:center; } .nav-links{ display:none; } }
+  @media(max-width:600px){ .hero{ padding:3.5rem 4vw 2.5rem; } .panel{ padding:1.5rem; } .section-inner{ padding:3.5rem 5vw; } }
+</style>
+</head>
+<body>
+<a href="#sect1" class="skip-link">Skip to studio</a>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="overlay" aria-hidden="true"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="brand"><span class="dot" aria-hidden="true"></span> NPM · SMA</div>
+  <div class="nav-links">
+    <button onclick="toggle1()">Studio</button>
+    <button onclick="goTo('Features')">Features</button>
+    <button onclick="goTo('How')">How it works</button>
+    <button onclick="goTo('Docs')">Docs</button>
+    <button onclick="goTo('Founder')">Founder</button>
+    <button onclick="goTo('Knowledge')">Knowledge</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow">NPMAI Ecosystem</span>
+  <h1>NPM Social Media Automation (NPM&#8209;SMA)</h1>
+  <div class="toggle-buttons">
+    <button class="toggle-btn" onclick="toggle1()">Web App</button>
+    <button class="toggle-btn" onclick="toggle()">Desktop App</button>
+  </div>
+  <div class="motto">Automate uploads. Unleash creativity.</div>
+  <p class="intro-text">This tool pairs <strong>AI-generated metadata</strong> with <strong>automatic publishing across major social platforms</strong>. Non-technical creators upload a single video and get smart titles, descriptions and hashtags applied everywhere — no metadata typing required.</p>
+</section>
+
+<div id="sect1">
+  <div class="platforms-wrapper panel">
+    <h3>Step 1 — Connect Your Platforms</h3>
+    <p>Click a platform to authorize. Connect all platforms first, then upload your video below.</p>
+    <div class="platform-grid">
+      <button class="platform-btn" data-platform="facebook" onclick="platformLogin('facebook')" aria-label="Connect Facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebook</span><span class="connected-label">✓ Connected</span>
+      </button>
+      <button class="platform-btn" data-platform="instagram" onclick="platformLogin('instagram')" aria-label="Connect Instagram">
+        <i class="fab fa-instagram" aria-hidden="true"></i><span>Instagram</span><span class="connected-label">✓ Connected</span>
+      </button>
+      <button class="platform-btn" data-platform="thread" onclick="platformLogin('thread')" aria-label="Connect Threads">
+        <i class="fab fa-threads" aria-hidden="true"></i><span>Threads</span><span class="connected-label">✓ Connected</span>
+      </button>
+      <button class="platform-btn" data-platform="linkedin" onclick="platformLogin('linkedin')" aria-label="Connect LinkedIn">
+        <i class="fab fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span><span class="connected-label">✓ Connected</span>
+      </button>
+      <button class="platform-btn" data-platform="tiktok" onclick="platformLogin('tiktok')" aria-label="Connect TikTok">
+        <i class="fab fa-tiktok" aria-hidden="true"></i><span>TikTok</span><span class="connected-label">✓ Connected</span>
+      </button>
+      <button class="platform-btn" data-platform="youtube" onclick="ytlogin()" aria-label="Connect YouTube">
+        <i class="fab fa-youtube" aria-hidden="true"></i><span>YouTube</span>
+      </button>
+    </div>
+    <div id="timer-warning">⚠️ Auth codes expire in ~10 minutes. Please upload your video soon!</div>
+  </div>
+
+  <section class="panel">
+    <h3 style="margin-bottom:1.4rem;">Step 2 — Upload Your Video</h3>
+    <form onsubmit="sendToFlask(event)">
+      <label for="video">🎬 Select Video File</label>
+      <input type="file" id="video" accept="video/*" required />
+      <label for="thumbnail">🖼️ Select Thumbnail (optional)</label>
+      <input type="file" id="thumbnail" accept="image/*" />
+      <button type="submit" id="upload-btn">🚀 Upload to Connected Platforms</button>
+    </form>
+    <div id="upload-status"></div>
+  </section>
+</div>
+
+<div id="sect2">
+  <section class="section-inner" style="padding-top:2rem;">
+    <h3 class="section-title" style="margin-bottom:.5rem;">Quick Buttons</h3>
+    <p class="section-sub">Jump straight to what you need.</p>
+    <div class="features-grid quick-grid">
+      <div class="card"><a href="#How"><h3>How it Works</h3></a><h4>See the four-step pipeline</h4></div>
+      <div class="card"><a href="#" onclick="toggle1();return false;"><h3>Download</h3></a><h4>Open the studio and start uploading</h4></div>
+      <div class="card"><a href="#Features"><h3>Features</h3></a><h4>What NPM-SMA automates for you</h4></div>
+      <div class="card"><a href="#Docs"><h3>Developer</h3></a><h4>Call the API directly — no UI needed</h4></div>
+      <div class="card"><a href="#Founder"><h3>Founder</h3></a><h4>Meet the person behind NPMAI Ecosystem</h4></div>
+      <div class="card"><a href="#Knowledge"><h3>Knowledge</h3></a><h4>More about this project</h4></div>
+    </div>
+  </section>
+
+  <section>
+    <div id="Features" class="section-inner">
+      <h2 class="section-title">✨ Features</h2>
+      <p class="section-sub">Everything a creator needs to publish everywhere, once.</p>
+      <div class="features-grid">
+        <div class="card"><i class="fas fa-brain" aria-hidden="true"></i><h3>AI-Generated Titles</h3><ul><li>Catchy, SEO-friendly titles generated automatically.</li></ul></div>
+        <div class="card"><i class="fas fa-file-lines" aria-hidden="true"></i><h3>Smart Video Descriptions</h3><ul><li>Engaging descriptions that summarize content and boost discoverability.</li></ul></div>
+        <div class="card"><i class="fas fa-hashtag" aria-hidden="true"></i><h3>Viral-Ready Hashtags</h3><ul><li>Trending hashtags automatically suggested for better reach.</li></ul></div>
+        <div class="card"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i><h3>Automatic Multi-Platform Upload</h3><ul><li>Post to Facebook, Instagram, Threads, LinkedIn, TikTok and YouTube with AI metadata applied.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt-bg">
+    <div id="How" class="section-inner">
+      <h2 class="section-title">⚡ How It Works</h2>
+      <p class="section-sub">Four steps between your camera roll and every feed you care about.</p>
+      <div class="features-grid">
+        <div class="card"><h3>1. Provide your video file.</h3><p style="color:var(--muted)">Select your video and thumbnail via the interface.</p></div>
+        <div class="card"><h3>2. AI generates metadata automatically.</h3><p style="color:var(--muted)">Language and reasoning models turn the raw video into a title, description and hashtag set.</p></div>
+        <div class="card"><h3>3. Authenticates securely.</h3><p style="color:var(--muted)">Seamless OAuth integration — secure, one-time setup per platform.</p></div>
+        <div class="card"><h3>4. Uploads automatically.</h3><p style="color:var(--muted)">Real-time progress tracking with instant confirmation.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DOCS ===================== -->
+  <section>
+    <div id="Docs" class="section-inner">
+      <h2 class="section-title">🧩 Docs — Call NPM-SMA Without the UI</h2>
+      <p class="docs-intro">The web studio above is just one client. Underneath it, NPM-SMA is a plain HTTP endpoint: send a video and one or more platform authorization codes as a multipart form, and it does the rest — AI metadata, upload and publishing. Python, JavaScript, Java, or literally anything that can send a POST request can talk to it directly.</p>
+      <div class="docs-endpoint-wrap">
+        <span class="docs-endpoint">POST /upload</span>
+      </div>
+
+      <div class="lang-tabs" role="tablist" aria-label="Choose a language">
+        <button class="lang-tab active" data-lang="python" onclick="showDocLang('python')">Python</button>
+        <button class="lang-tab" data-lang="javascript" onclick="showDocLang('javascript')">JavaScript</button>
+        <button class="lang-tab" data-lang="java" onclick="showDocLang('java')">Java</button>
+      </div>
+
+      <div class="code-panel visible" data-lang="python"><pre>import requests
+
+url = "http://localhost:5000/upload"
+
+files = {
+    "video": open("my_video.mp4", "rb"),
+    "thumbnail": open("thumb.jpg", "rb"),  # optional
+}
+data = {
+    "auth_code_facebook": "AUTH_CODE_FROM_FACEBOOK_OAUTH",
+    "auth_code_youtube":  "AUTH_CODE_FROM_YOUTUBE_OAUTH",
+}
+
+response = requests.post(url, files=files, data=data, timeout=1200)
+print(response.json())</pre></div>
+
+      <div class="code-panel" data-lang="javascript"><pre>const form = new FormData();
+form.append("video", videoFile);          // File object
+form.append("thumbnail", thumbnailFile);  // optional
+form.append("auth_code_instagram", authCode);
+form.append("auth_code_linkedin", otherAuthCode);
+
+const res = await fetch("http://localhost:5000/upload", {
+  method: "POST",
+  body: form,
+});
+const result = await res.json();
+console.log(result);</pre></div>
+
+      <div class="code-panel" data-lang="java"><pre>HttpClient client = HttpClient.newHttpClient();
+
+var bodyPublisher = MultipartBodyPublisher.newBuilder()
+    .addPart("video", Path.of("my_video.mp4"))
+    .addPart("auth_code_tiktok", "AUTH_CODE_FROM_TIKTOK_OAUTH")
+    .build();
+
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("http://localhost:5000/upload"))
+    .header("Content-Type", bodyPublisher.contentType())
+    .POST(bodyPublisher)
+    .build();
+
+HttpResponse&lt;String&gt; response =
+    client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());</pre></div>
+
+      <div class="docs-fields">
+        <div class="docs-field"><code>video</code><p>Required. The video file to publish.</p></div>
+        <div class="docs-field"><code>thumbnail</code><p>Optional image file, used where the platform supports a custom thumbnail.</p></div>
+        <div class="docs-field"><code>auth_code_facebook</code><p>OAuth code from Facebook's own authorization screen.</p></div>
+        <div class="docs-field"><code>auth_code_instagram</code><p>OAuth code from Instagram's authorization screen.</p></div>
+        <div class="docs-field"><code>auth_code_thread</code><p>OAuth code from Threads' authorization screen.</p></div>
+        <div class="docs-field"><code>auth_code_linkedin</code><p>OAuth code from LinkedIn's authorization screen.</p></div>
+        <div class="docs-field"><code>auth_code_tiktok</code><p>OAuth code from TikTok's authorization screen.</p></div>
+        <div class="docs-field"><code>auth_code_youtube</code><p>OAuth code from YouTube's authorization screen.</p></div>
+      </div>
+      <p class="docs-intro" style="margin-top:2rem;">Only send codes for the platforms you want to post to — any missing field is simply skipped. The response mirrors the publishing pipeline's own JSON reply for each connected platform.</p>
+    </div>
+  </section>
+
+  <!-- ===================== FOUNDER ===================== -->
+  <section class="alt-bg">
+    <div id="Founder" class="section-inner">
+      <h2 class="section-title">👤 Founder</h2>
+      <p class="section-sub">The person behind NPMAI Ecosystem, the research group NPM-SMA is built under.</p>
+      <div class="founder-wrap">
+        <div>
+          <div class="founder-avatar" aria-hidden="true">SK</div>
+        </div>
+        <div class="founder-bio">
+          <div class="founder-name">Sonu Kumar</div>
+          <div class="founder-role">Founder, NPMAI Ecosystem · Heads Research &amp; Technology and Political Science initiatives</div>
+          <p>A self-taught programmer from Nalanda, Bihar, who started building with no formal computer-science background and no family history in academics — just curiosity and internet access.</p>
+          <p>At 11, he publicly raised civic and social issues with his state's Chief Minister over social media, pairing each problem with a proposed solution. At 13, he took that story to the TEDx stage in a talk about determination and turning dreams into reality.</p>
+          <p>He now builds open-source tools under NPMAI Ecosystem spanning AI automation, blockchain-based voting, data analytics, and accessibility-first apps — NPM-SMA is one of them.</p>
+          <div class="founder-stats">
+            <div class="founder-stat"><b>14</b><span>Years old</span></div>
+            <div class="founder-stat"><b>TEDx</b><span>Speaker at 13</span></div>
+            <div class="founder-stat"><b>100%</b><span>Scholarship, Allen &amp; DDPS</span></div>
+          </div>
+          <div class="founder-links">
+            <a href="https://npmai.netlify.app" target="_blank" rel="noopener">NPMAI Ecosystem ↗</a>
+            <a href="https://github.com/sonuramashishnpm" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div id="Knowledge" class="section-inner">
+      <h2 class="section-title">🛠 No Technical Knowledge Needed</h2>
+      <p class="section-sub">The studio above is built for creators first, developers second.</p>
+      <div class="features-grid">
+        <div class="card"><h3>No command-line expertise required.</h3><ul><li>Simple interface with file selection and one-click automation.</li></ul></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer><p>© 2026 NPM Social Media Automation · Built by NPMAI Ecosystem, for creators.</p></footer>
+
+<script>
+/* ============================================================
+   ORIGINAL APPLICATION LOGIC — UNCHANGED.
+   Every id, function name and API call below is identical to
+   the previous version. Only markup/CSS around it was redesigned.
+   ============================================================ */
+const FLASK_BASE = "http://localhost:5000";
+const oauthConfig = {
+  facebook:  { authUrl:"https://www.facebook.com/dialog/oauth",         clientId:"YOUR_FACEBOOK_APP_ID",    redirectUri:FLASK_BASE+"/auth/facebook",  scope:"pages_show_list,pages_read_engagement,pages_manage_posts,publish_video" },
+  instagram: { authUrl:"https://www.facebook.com/dialog/oauth",         clientId:"YOUR_FACEBOOK_APP_ID",    redirectUri:FLASK_BASE+"/auth/instagram", scope:"instagram_basic,instagram_content_publish,pages_show_list,pages_read_engagement" },
+  thread:    { authUrl:"https://www.threads.net/oauth/authorize",        clientId:"YOUR_THREADS_APP_ID",     redirectUri:FLASK_BASE+"/auth/thread",    scope:"threads_basic,threads_content_publish" },
+  linkedin:  { authUrl:"https://www.linkedin.com/oauth/v2/authorization",clientId:"YOUR_LINKEDIN_CLIENT_ID",redirectUri:FLASK_BASE+"/auth/linkedin",  scope:"w_member_social,openid,profile" },
+  tiktok:    { authUrl:"https://www.tiktok.com/v2/auth/authorize",       clientId:"YOUR_TIKTOK_CLIENT_KEY",  redirectUri:FLASK_BASE+"/auth/tiktok",    scope:"user.info.basic,video.upload,video.publish" }
+};
+let authTokens = JSON.parse(sessionStorage.getItem('sma_auth_tokens')) || {};
+function saveTokens(){ sessionStorage.setItem('sma_auth_tokens', JSON.stringify(authTokens)); }
+window.addEventListener('DOMContentLoaded', () => {
+  Object.keys(authTokens).forEach(p => { if(authTokens[p]) markConnected(p); });
+  if(Object.keys(authTokens).length > 0) showTimerWarning();
+});
+// STEP 1: Open OAuth popup — user clicks platform button
+function platformLogin(platform) {
+  const cfg = oauthConfig[platform];
+  const state = platform + "_" + Date.now();
+  sessionStorage.setItem('oauth_state', state);
+  sessionStorage.setItem('oauth_platform', platform);
+  const params = new URLSearchParams({ client_id:cfg.clientId, redirect_uri:cfg.redirectUri, scope:cfg.scope, response_type:"code", state });
+  let url = cfg.authUrl + "?" + params.toString();
+  if(platform === "tiktok") url = url.replace("client_id=","client_key=");
+  window.open(url, platform+"_auth", "width=600,height=650,scrollbars=yes");
+  showToast("Waiting for "+platform+" authorization...","info");
+}
+// Flask popup closes and sends postMessage with auth code back here
+window.addEventListener('message', (e) => {
+  const { platform, code, state } = e.data || {};
+  if(!platform || !code) return;
+  if(state !== sessionStorage.getItem('oauth_state') || platform !== sessionStorage.getItem('oauth_platform')){
+    showToast("Auth failed: state mismatch","error"); return;
+  }
+  authTokens[platform] = code;  // store in sessionStorage
+  saveTokens();
+  markConnected(platform);
+  showTimerWarning();
+  sessionStorage.removeItem('oauth_state');
+  sessionStorage.removeItem('oauth_platform');
+  showToast(platform.charAt(0).toUpperCase()+platform.slice(1)+" connected! ✓","success");
+});
+function markConnected(p){
+  const btn = document.querySelector(`.platform-btn[data-platform="${p}"]`);
+  if(btn) btn.classList.add('connected');
+}
+// STEP 2: Send video + auth codes → FLASK only. Flask forwards to HuggingFace.
+async function sendToFlask(event) {
+  event.preventDefault();
+  const videoFile = document.getElementById('video').files[0];
+  if(!videoFile){ showToast("Please select a video","error"); return; }
+  const connected = Object.keys(authTokens).filter(p => authTokens[p]);
+  if(connected.length === 0){ showToast("Connect at least one platform first","error"); return; }
+  const formData = new FormData();
+  formData.append('video', videoFile);
+  const thumb = document.getElementById('thumbnail').files[0];
+  if(thumb) formData.append('thumbnail', thumb);
+  // Send auth codes with exact platform names — Flask maps them to correct param names
+  connected.forEach(platform => {
+    formData.append('auth_code_'+platform, authTokens[platform]);
+  });
+  const btn = document.getElementById('upload-btn');
+  btn.disabled = true; btn.textContent = "⏳ Uploading...";
+  showStatus("Sending to Flask server... will post to: "+connected.join(", "));
+  try {
+    // JS → Flask /upload (Flask then → HuggingFace /data-entry)
+    const res = await fetch(FLASK_BASE+"/upload", { method:"POST", body:formData });
+    const result = await res.json();
+    if(res.ok){
+      showToast("Posted to all platforms! 🎉","success");
+      showStatus("✅ Done! Posted to: "+connected.join(", "));
+      authTokens = {}; saveTokens();
+    } else {
+      showToast("Failed: "+(result.error||"Unknown error"),"error");
+      showStatus("❌ Failed. Try again.");
+    }
+  } catch(err){
+    showToast("Error: "+err.message,"error");
+    showStatus("❌ Could not reach Flask server. Is it running?");
+  } finally {
+    btn.disabled = false; btn.textContent = "🚀 Upload to Connected Platforms";
+  }
+}
+function showToast(msg, type="info"){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = "show "+type;
+  setTimeout(()=>{ t.className=""; }, 4000);
+}
+function showStatus(msg){
+  const el = document.getElementById('upload-status');
+  el.style.display="block"; el.textContent=msg;
+}
+function showTimerWarning(){ document.getElementById('timer-warning').style.display="block"; }
+function toggle(){ document.getElementById("sect2").style.display="block"; document.getElementById("sect1").style.display="none"; }
+function toggle1(){ document.getElementById("sect1").style.display="flex"; document.getElementById("sect2").style.display="none"; }
+function ytlogin(){ window.location.href="/login"; }
+</script>
+
+<script>
+/* ============================================================
+   NEW, ADDITIVE UI-ONLY SCRIPTS
+   Nav smooth-jump, docs language tabs, animated background.
+   None of these touch the logic above.
+   ============================================================ */
+function goTo(id){
+  toggle();
+  requestAnimationFrame(()=>{
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+  });
+}
+function showDocLang(lang){
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.toggle('visible', p.dataset.lang === lang));
+}
+
+(function initBackground(){
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, nodes;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  function makeNodes(){
+    const count = w < 700 ? 22 : 42;
+    nodes = Array.from({length: count}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+      r: Math.random()*1.6+1
+    }));
+  }
+  function step(){
+    ctx.clearRect(0,0,w,h);
+    for(const n of nodes){
+      n.x += n.vx; n.y += n.vy;
+      if(n.x < 0 || n.x > w) n.vx *= -1;
+      if(n.y < 0 || n.y > h) n.vy *= -1;
+    }
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 150){
+          ctx.strokeStyle = `rgba(30,215,96,${0.14*(1-dist/150)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    for(const n of nodes){
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(30,215,96,0.55)';
+      ctx.fill();
+    }
+    if(!prefersReduced) requestAnimationFrame(step);
+  }
+
+  resize(); makeNodes(); step();
+  window.addEventListener('resize', () => { resize(); makeNodes(); if(prefersReduced) step(); });
+})();
+</script>
+</body>
+</html>
