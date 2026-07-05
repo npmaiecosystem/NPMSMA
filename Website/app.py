@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, render_template
 from flask_cors import CORS
 import requests
 
@@ -7,6 +7,10 @@ CORS(app)  # allow your HTML frontend to call Flask
 
 DATA_ENTRY_URL = "https://sonuramashishnpm-npmsma.hf.space/data-entry"
 
+@app.route("/")
+def render():
+    return render_template("index.html")
+    
 @app.route("/auth/<platform>")
 def oauth_callback(platform):
     code  = request.args.get("code", "")
