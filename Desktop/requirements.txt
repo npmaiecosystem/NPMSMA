@@ -1,9 +1,2 @@
 PySide6
-moviepy
-openai-whisper
-torch
-google-api-python-client
-google-auth
-google-auth-oauthlib
-langchain-core
 npmai
