@@ -42,8 +42,9 @@ to hand to a packager. Feel free to split it once it's stable.
 """
 """ FINAL COMMIT By Sonu Kumar """
 
-
+import subprocess
 import sys
+print(subprocess.run([sys.executable, "-m", "pip", "install", "
 import os
 import json
 import mimetypes
@@ -63,7 +64,7 @@ from PySide6.QtWebChannel import QWebChannel
 # CONFIG — fill these in with your real values
 # ============================================================================
 
-BACKEND_URL = "https://sonuramashishnpm-npmsma.hf.space"
+BACKEND_URL = "https://sonuramashishnpm-npmsma.hf.space/"
 DATA_ENTRY_ENDPOINT = f"{BACKEND_URL}/data-entry"
 INSTALL_SITE_URL = "https://npmsma.onrender.com"
 
@@ -1194,7 +1195,7 @@ HTML_SHELL = HTML_SHELL.replace("__DATA_ENTRY_ENDPOINT__", DATA_ENTRY_ENDPOINT)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("NPMSMA — Social Autopilot")
+        self.setWindowTitle("NPMSMA — Social Media Automation")
         self.resize(1320, 840)
         self.setMinimumSize(980, 640)
 
